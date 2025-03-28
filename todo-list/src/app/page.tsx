@@ -20,6 +20,7 @@ export default function Home(){
         
     }, [])
 
+    // Fetch all todos
     const fetchTodos = async () => {  // async since future type
         const listOfTodos = await axios.get('http://0.0.0.0:8000/todo/')
         const mapData = listOfTodos.data.map(({ id, title, description, due_date, completed_date, priority }) => {
@@ -32,7 +33,8 @@ export default function Home(){
         })
         setTodos(mapData)
     }
-    
+
+    // Function to delete a todo by ID
     const deleteTodo = async (todoId) => {
         try {
             const todoIndex = todos.findIndex(todo => todo.id === todoId);
@@ -56,8 +58,10 @@ export default function Home(){
                 throw new Error(`Todo with ID ${todoId} not found`);
             }
             
+            // Update todo with the updated fields
             const todoToUpdate = { ...todos[todoIndex], ...updatedFields };
 
+            // Convert date
             const completedDate = new Date()
             const dateOnlyISO = completedDate.toISOString().split('T')[0];
             console.log(dateOnlyISO)
